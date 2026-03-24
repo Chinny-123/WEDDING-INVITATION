@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wedding Invitation</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #fceabb, #f8b500);
+    font-family: 'Georgia', serif;
+}
+
+/* ================= ENVELOPE ================= */
+.envelope {
+    position: relative;
+    width: 320px;
+    height: 210px;
+    cursor: pointer;
+    perspective: 1200px;
+    background-color: #FAF3E1;
+}
+
+/* Body */
+.envelope-body {
+   position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( #FAF3E1 50%, #f0e6c8 50%, #FAF3E1 50%);
+    border: 2px solid #d8cfb0;
+    border-radius: 6px;
+
+      
+}
+
+/* Bottom fold */
+.envelope-body::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #FAF3E1, #f0e6c8);
+    border-radius: 6px;
+    z-index: 1;
+
+}
+
+/* Flap */
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #F5E7C6, #8a6308);
+    clip-path: polygon(0 0, 100% 0, 50% 55%);
+    transform-origin: top;
+    transition: transform 1s ease;
+    z-index: 2;
+
+    box-shadow: inset 0 -10px 15px rgba(0,0,0,0.15);
+}
+
+.flap::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+}
+
+/* Side folds */
+.envelope::before,
+.envelope::after {
+    content: "";
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: rgba(0,0,0,0.03);
+    z-index: 1;
+}
+
+.envelope::before {
+    left: 0;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.envelope::after {
+    right: 0;
+    clip-path: polygon(100% 0, 0 50%, 100% 100%);
+}
+
+/* Seal */
+.seal {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 95px;
+    height: 95px;
+    background: url("NEWSEAL.png") no-repeat center;
+    background-size: contain;
+    border-radius: 50%;
+    z-index: 3;
+
+
+    transition: opacity 0.5s;
+}
+
+/* Letter */
+.letter {
+    position: absolute;
+    width: 90%;
+    height: 180px;
+    background: white;
+    top: 10px;
+    left: 5%;
+    padding: 15px;
+    transform: translateY(100%);
+    transition: transform 1s ease;
+    z-index: 0;
+    border-radius: 5px;
+}
+
+/* Open animation */
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope.open .letter {
+    transform: translateY(-50px);
+}
+
+.envelope.open .seal {
+    opacity: 0;
+}
+
+/* ================= INVITATION ================= */
+.invitation {
+    display: none;
+    text-align: center;
+    padding: 20px;
+}
+
+.invitation-card {
+    max-width: 420px;
+    margin: auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.75);
+    animation: fadeIn 1.5s ease;
+}
+
+.title {
+    font-size: 2rem;
+    color: #b84c00;
+}
+
+.intro {
+    color: #555;
+}
+
+.divider {
+    width: 60%;
+    height: 2px;
+    background: #f8b500;
+    margin: 15px auto;
+}
+
+.event {
+    background: #fff8f0;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background: #b84c00;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #f8b500;
+}
+
+/* Greeting */
+#messageInput {
+    width: 100%;
+    height: 70px;
+    margin-top: 10px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Envelope -->
+<div class="envelope" onclick="openEnvelope()" id="env">
+    <div class="flap"></div>
+    <div class="envelope-body"></div>
+    <div class="seal"></div>
+
+</div>
+
+<!-- Invitation -->
+<div class="invitation" id="invitation">
+    <div class="invitation-card">
+        <h2 class="title">Partner & Partner</h2>
+
+        <p class="intro">Together with their families,</p>
+        <p class="intro">request the honor of your presence</p>
+        <p class="intro">at their wedding celebration</p>
+
+        <div class="divider"></div>
+
+        <div class="event">
+            <h3>Wedding Ceremony</h3>
+            <p>Date: April 30, 2026</p>
+            <p>Time: 3:00 PM</p>
+            <p>Venue: Cebu City</p>
+        </div>
+
+        <div class="event">
+            <h3>Reception</h3>
+            <p>Immediately after the ceremony</p>
+        </div>
+
+        <textarea id="messageInput" placeholder="Write your message..."></textarea>
+        <br><br>
+        <button onclick="sendMessage()">Send Greetings</button>
+    </div>
+</div>
+
+<script>
+function openEnvelope() {
+    const env = document.getElementById("env");
+    env.classList.add("open");
+
+    setTimeout(() => {
+        env.style.display = "none";
+        document.getElementById("invitation").style.display = "block";
+    }, 1200);
+}
+
+function sendMessage() {
+    let msg = document.getElementById("messageInput").value;
+    if(msg.trim() === ""){
+        alert("Please enter a message!");
+    } else {
+        alert("Thank you for your message!");
+        document.getElementById("messageInput").value = "";
+    }
+}
+</script>
+
+</body>
+</html>
